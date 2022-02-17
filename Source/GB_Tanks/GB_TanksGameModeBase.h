@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Components/BoxComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "GB_TanksGameModeBase.generated.h"
@@ -14,4 +15,5 @@ class GB_TANKS_API AGB_TanksGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+
 };
