@@ -51,15 +51,36 @@ public:
 	float fFScale = 0.f;
 	float fRScale = 0.f;
 
+	// -- new movement
+
+	
+	float currentSpeed = 0.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float maxSpeed = 350.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float minSpeed = -250.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float acceleration = 200.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float stoppingPower = 4.f;
+	//
+
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
 	float towerAcceleration = 2.f;
 	
 	AMainPlayerController* controller;
+
+private:
+	void Move(float DeltaTime);
+	void RotateTower(float DeltaTime);
+	void RotateTank(float DeltaTime);
+	void Stop();
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	bool IsPositive(float value);
 	
 public:	
 	// Called every frame
