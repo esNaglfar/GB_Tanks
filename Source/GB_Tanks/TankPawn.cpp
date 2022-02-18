@@ -64,8 +64,8 @@ void ATankPawn::Move(float DeltaTime)
 	FVector direction = GetActorForwardVector() * currentSpeed * DeltaTime ;
 	SetActorLocation(location + direction);
 
-	GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current acceleration : %f"), currentacceleration));
-	GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current speed : %f"), currentSpeed));
+	//GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current acceleration : %f"), currentacceleration));
+	//GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current speed : %f"), currentSpeed));
 }
 
 void ATankPawn::RotateTower(float DeltaTime)
