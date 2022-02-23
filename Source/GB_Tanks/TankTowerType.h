@@ -39,6 +39,18 @@ public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	float Damage = 1.f;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
+	int MaxAmmo = 20;
+	int CurrentAmmo;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
+	int FireAmmoConsumption = 1;
+	
+	bool bCanFire = true;
+	
+	void Fire();
+	void AlterFire();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

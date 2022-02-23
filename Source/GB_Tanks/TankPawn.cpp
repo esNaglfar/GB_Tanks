@@ -34,64 +34,87 @@ ATankPawn::ATankPawn()
 
 void ATankPawn::MoveForward(float forwardAxis)
 {
-	fFScale = forwardAxis;
+	ForwardScale = forwardAxis;
 }
 
-void ATankPawn::MoveRight(float rightAxis)
-{
-	fRScale = rightAxis;
-}
 
 void ATankPawn::Rotate(float rotationValue)
 {
-	fRotationScale = rotationValue;
+	RotationScale = rotationValue;
+}
+
+void ATankPawn::Fire()
+{
+	if(!TankTower)
+		return;
+	TankTower->Fire();
+}
+
+void ATankPawn::AlterFire()
+{
+	if(!TankTower)
+		return;
+	TankTower->AlterFire();
+}
+
+void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
+{
+	if(TankTower)
+	TankTower->Destroy();
+	TankTower = SpawnTower(TowerType);
+}
+
+ATankTowerType* ATankPawn::SpawnTower(TSubclassOf<ATankTowerType> TowerType)
+{
+	auto towersSawnPointTransform = TurretSpawnPoint->GetComponentTransform();
+	auto tankTower = GetWorld()->SpawnActor<ATankTowerType>(TowerType, towersSawnPointTransform);
+	tankTower->AttachToComponent(TurretSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	return tankTower;
 }
 
 void ATankPawn::Move(float DeltaTime)
 {
-	auto location = GetActorLocation();
-	auto currentacceleration = fFScale > 0 ? acceleration : acceleration * -0.75f;
 	
-	if (currentSpeed >= minSpeed && currentSpeed <= maxSpeed && fFScale != 0.f)
+	auto location = GetActorLocation();
+	auto currentacceleration = ForwardScale > 0 ? Acceleration : Acceleration * -0.75f;
+	
+	if (CurrentSpeed >= MinSpeed && CurrentSpeed <= MaxSpeed && ForwardScale != 0.f)
 	{
-		currentSpeed += currentacceleration * DeltaTime;
+		CurrentSpeed += currentacceleration * DeltaTime;
 	}
-	if(fFScale == 0.f || (IsPositive(currentSpeed) != IsPositive(fFScale)))
+	if(ForwardScale == 0.f || (FMath::Sign(CurrentSpeed) != FMath::Sign(ForwardScale)))
 	{
 		Stop();
 	}
 	
-	FVector direction = GetActorForwardVector() * currentSpeed * DeltaTime ;
+	FVector direction = GetActorForwardVector() * CurrentSpeed * DeltaTime ;
 	SetActorLocation(location + direction);
-
-	//GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current acceleration : %f"), currentacceleration));
-	//GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::Yellow,FString::Printf(TEXT("Current speed : %f"), currentSpeed));
 }
 
 void ATankPawn::RotateTower(float DeltaTime)
 {
 	
-	FVector mousePos = controller->GetMousePos();
+	FVector mousePos = TankController->GetMousePos();
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
 	FRotator currentRotation = TurretSpawnPoint->GetComponentRotation();
 	targetRotation.Pitch = currentRotation.Pitch;
 	targetRotation.Roll = currentRotation.Roll;
-	TurretSpawnPoint->SetWorldRotation(FMath::Lerp(currentRotation,targetRotation,towerAcceleration*DeltaTime));
+	TurretSpawnPoint->SetWorldRotation(FMath::Lerp(currentRotation,targetRotation,TowerAccelerationSpeed*DeltaTime));
 }
 
 void ATankPawn::RotateTank(float DeltaTime)
 {
-	float YawRotation = GetActorRotation().Yaw + fRotationSpeed * DeltaTime * fRotationScale;
+	float YawRotation = GetActorRotation().Yaw + RotationSpeed * DeltaTime * RotationScale * (ForwardScale >=0 ? 1 : -1);
 	FRotator rotator = FRotator(0.f, YawRotation,0.f);
 	SetActorRotation(rotator);
 }
 
 void ATankPawn::Stop()
 {
-	if(currentSpeed != 0.f)
+	if(CurrentSpeed != 0.f)
 	{
-		currentSpeed += acceleration * currentSpeed / FMath::Abs(currentSpeed) * -stoppingPower * GetWorld()->DeltaTimeSeconds;
-		if (FMath::Abs(currentSpeed) <= 4) currentSpeed = 0.f;
+		CurrentSpeed += Acceleration * CurrentSpeed / FMath::Abs(CurrentSpeed) * -StoppingPower * GetWorld()->DeltaTimeSeconds;
+		if (FMath::Abs(CurrentSpeed) <= 4) CurrentSpeed = 0.f;
 	}
 }
 
@@ -100,16 +123,11 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	controller = Cast<AMainPlayerController>(GetController());
-	
-	auto towertSpawnPointTransform = TurretSpawnPoint->GetComponentTransform();
-	TankTower = GetWorld()->SpawnActor<ATankTowerType>(TankTowerType, towertSpawnPointTransform);
-	TankTower->AttachToComponent(TurretSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-}
+	TankController = Cast<AMainPlayerController>(GetController());
 
-bool ATankPawn::IsPositive(float value)
-{
-	return FMath::Abs(value) / value > 0 ? true : false;
+	if(!TankTowerTypeBase)
+		return;
+	ChangeTower(TankTowerTypeBase);
 }
 
 // Called every frame
@@ -122,6 +140,8 @@ void ATankPawn::Tick(float DeltaTime)
 	Move(DeltaTime); // movement with acceleration
 	RotateTank(DeltaTime); // Rotation of Body
 	RotateTower(DeltaTime); //Rotation of Tower
+
+	GEngine->AddOnScreenDebugMessage(400, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %f / %f"), CurrentHealth, MaxHealth));
 }
 
 // Called to bind functionality to input

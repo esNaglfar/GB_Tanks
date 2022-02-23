@@ -23,8 +23,11 @@ class GB_TANKS_API AMainPlayerController : public APlayerController
 	virtual void Tick(float DeltaSeconds) override;
 	
 	void OnMoveForward(float value);
-	void OnMoveRight(float value);
 	void OnRotate(float value);
+	void OnFire();
+	void OnAlterFire();
+	void OnPrevTurret();
+	void OnNextTurret();
 
 public:
 	FVector GetMousePos() {return MousePosition;}

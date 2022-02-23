@@ -16,20 +16,43 @@ ATankTowerType::ATankTowerType()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>("Projectile spawn point");
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
+	
+}
 
+void ATankTowerType::Fire()
+{
+	if(CurrentAmmo <= 0)
+		return;
+	if(!bCanFire)
+		return;
+	
+	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" BANG BANG BANG "));
+	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
+}
+
+void ATankTowerType::AlterFire()
+{
+	if(CurrentAmmo <= 0)
+		return;
+	if(!bCanFire)
+		return;
+	
+	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" PEW PEW PEW "));
+	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
 }
 
 // Called when the game starts or when spawned
 void ATankTowerType::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CurrentAmmo = MaxAmmo;
 }
 
 // Called every frame
 void ATankTowerType::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 
 }
 
