@@ -105,7 +105,7 @@ void ATankTowerType::Tick(float DeltaTime)
 	
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),
-		GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle) + 1.f));
+		GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle)));
 
 }
 
