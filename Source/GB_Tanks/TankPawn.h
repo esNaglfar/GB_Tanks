@@ -32,10 +32,7 @@ public:
 	UArrowComponent* TurretSpawnPoint;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
-	TSubclassOf<ATankTowerType> TankTowerType;
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	//UStaticMeshComponent* TankTower;
-	
+	TSubclassOf<ATankTowerType> TankTowerTypeBase;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USpringArmComponent* CameraArm;
@@ -43,54 +40,56 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* GameCamera;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
+	TArray<TSubclassOf<ATankTowerType>> TankTowers;
 
-	void MoveForward(float forwardAxis);
-	void MoveRight(float rightAxis);
-	void Rotate(float rotationValue);
+
+	void MoveForward(float ForwardAxis);
+	void Rotate(float RotationValue);
+	void Fire();
+	void AlterFire();
+	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
+
+	void ChangeTowerByInput(float Value);
 	
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float fFMovementSpeed = 350.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float fRMovementSpeed = 350.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
-	float fRotationSpeed = 60.f;
-	float fRotationScale = 0.f;
-	float fFScale = 0.f;
-	float fRScale = 0.f;
-
-	// -- new movement
-
-	
-	float currentSpeed = 0.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float maxSpeed = 350.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float minSpeed = -250.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float acceleration = 200.f;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
-	float stoppingPower = 4.f;
-	//
+	ATankTowerType* SpawnTower(TSubclassOf<ATankTowerType> TowerType);
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
-	float towerAcceleration = 2.f;
+	float RotationSpeed = 60.f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float MaxSpeed = 350.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float MinSpeed = -250.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float Acceleration = 200.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
+	float StoppingPower = 4.f;
+
 	
-	AMainPlayerController* controller;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Combat|Health")
+	float MaxHealth = 500.f;
+	
+	AMainPlayerController* TankController;
 
-private:
-	void Move(float DeltaTime);
-	void RotateTower(float DeltaTime);
-	void RotateTank(float DeltaTime);
-	void Stop();
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Misc")
 	ATankTowerType* TankTower;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	bool IsPositive(float value);
 	
+	void Move(float DeltaTime);
+	void RotateTank(float DeltaTime);
+	void Stop();
+	
+
+	float RotationScale = 0.f;
+	float ForwardScale = 0.f;
+	float CurrentSpeed = 0.f;
+	float CurrentHealth = MaxHealth;
+	float CurrentTowerIndex = 0;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

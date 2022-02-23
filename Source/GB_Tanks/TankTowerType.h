@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "TankTowerType.generated.h"
 
+class ATankPawn;
 
 UENUM()
 enum class ETurretFiretype
@@ -35,16 +36,48 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	float RateOfFire = 1.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
+	float AlterRateOfFire = 1.f;
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	float Damage = 1.f;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Rotation")
+	float RotationAcceleration = 4.f;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
+	int MaxAmmo = 20;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Combat")
+	int CurrentAmmo;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
+	int FireAmmoConsumption = 1;
+	
+	bool bCanFire = true;
+	bool bCanAlterFire = false;
+	FTimerHandle TimerHandle;
+
+	void Fire();
+	void AlterFire();
+	void ChangeAlterFire();
+	void SetTankPawn(ATankPawn* Pawn);
+	void ResetFireState();
+	void RotateTower();
+	void MakeShot(FString text);
+	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	ATankPawn* TankPawn;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 };
+
+

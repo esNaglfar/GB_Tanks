@@ -10,14 +10,17 @@ void AMainPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	InputComponent->BindAxis("ForwardAxis",this,&AMainPlayerController::OnMoveForward);
-	InputComponent->BindAxis("RightAxis",this,&AMainPlayerController::OnMoveRight);
 	InputComponent->BindAxis("Rotation",this,&AMainPlayerController::OnRotate);
+	InputComponent->BindAction("Fire", IE_Pressed,this ,&AMainPlayerController::OnFire);
+	InputComponent->BindAction("AlterFire", IE_Pressed,this ,&AMainPlayerController::OnAlterFire);
+	InputComponent->BindAction("AlterFire", IE_Released,this ,&AMainPlayerController::OnAlterFire);
+	InputComponent->BindAxis("NextTurret",this ,&AMainPlayerController::OnNextTurret);
 }
 
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	playerPawn = Cast<ATankPawn>(GetPawn());
+	PlayerPawn = Cast<ATankPawn>(GetPawn());
 	this->SetShowMouseCursor(true);
 }
 
@@ -25,27 +28,36 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	FVector mouseDirection;
-	DeprojectMousePositionToWorld(MousePosition,mouseDirection);
-	FVector PawnPos = playerPawn->GetActorLocation();
-	MousePosition.Z = PawnPos.Z;
-	FVector Dir = MousePosition - PawnPos;
-	Dir.Normalize();
-	MousePosition = PawnPos + Dir * 1000.f;
+	FVector MouseDirection;
+	DeprojectMousePositionToWorld(MousePosition,MouseDirection);
+	auto Z = FMath::Abs(PlayerPawn->GetActorLocation().Z - MousePosition.Z);
+	MousePosition = MousePosition - MouseDirection * Z / MouseDirection.Z;
 }
 
-void AMainPlayerController::OnMoveForward(float value)
+void AMainPlayerController::OnMoveForward(float Value)
 {
-	playerPawn->MoveForward(value);
+	PlayerPawn->MoveForward(Value);
+	
 }
 
-void AMainPlayerController::OnMoveRight(float value)
+void AMainPlayerController::OnRotate(float Value)
 {
-	playerPawn->MoveRight(value);
+	PlayerPawn->Rotate(Value);
+	
 }
 
-void AMainPlayerController::OnRotate(float value)
+void AMainPlayerController::OnFire()
 {
-	playerPawn->Rotate(value);
+	PlayerPawn->Fire();
+}
+
+void AMainPlayerController::OnAlterFire()
+{
+	PlayerPawn->AlterFire();
+}
+
+void AMainPlayerController::OnNextTurret(float Value)
+{
+	PlayerPawn->ChangeTowerByInput(Value);
 }
 
