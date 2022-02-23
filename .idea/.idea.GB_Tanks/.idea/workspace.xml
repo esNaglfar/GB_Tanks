@@ -4,10 +4,18 @@
     <projectFile>Intermediate/ProjectFiles/GB_Tanks.vcxproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8fa23acd-6418-4aba-9d8e-7c4911115d18" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/LargeProjectileTower.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/LargeProjectileTower.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/Arena.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Arena.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +266,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1645580033599</updated>
-      <workItem from="1645580079732" duration="990000" />
+      <workItem from="1645580079732" duration="4089000" />
     </task>
     <servers />
   </component>
