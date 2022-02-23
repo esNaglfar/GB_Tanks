@@ -22,19 +22,18 @@ class GB_TANKS_API AMainPlayerController : public APlayerController
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	
-	void OnMoveForward(float value);
-	void OnRotate(float value);
+	void OnMoveForward(float Value);
+	void OnRotate(float Value);
 	void OnFire();
 	void OnAlterFire();
-	void OnPrevTurret();
-	void OnNextTurret();
+	void OnNextTurret(float Value);
 
 public:
 	FVector GetMousePos() {return MousePosition;}
 
 private:
 	UPROPERTY()
-	ATankPawn* playerPawn;
+	ATankPawn* PlayerPawn;
 	FVector MousePosition;
 };
 

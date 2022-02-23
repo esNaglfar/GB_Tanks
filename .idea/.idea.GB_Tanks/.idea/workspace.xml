@@ -13,7 +13,6 @@
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/Arena.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Arena.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
@@ -270,7 +269,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1645580033599</updated>
-      <workItem from="1645580079732" duration="10185000" />
+      <workItem from="1645580079732" duration="11085000" />
+      <workItem from="1645611163440" duration="6521000" />
     </task>
     <servers />
   </component>
@@ -278,7 +278,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

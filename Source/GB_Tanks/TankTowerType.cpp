@@ -3,6 +3,8 @@
 
 #include "TankTowerType.h"
 
+#include "TankPawn.h"
+
 // Sets default values
 ATankTowerType::ATankTowerType()
 {
@@ -40,6 +42,12 @@ void ATankTowerType::AlterFire()
 	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" PEW PEW PEW "));
 	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
 }
+
+void ATankTowerType::SetTankPawn(ATankPawn* Pawn)
+{
+	TankPawn = Pawn;
+}
+
 
 // Called when the game starts or when spawned
 void ATankTowerType::BeginPlay()

@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "TankTowerType.generated.h"
 
+class ATankPawn;
 
 UENUM()
 enum class ETurretFiretype
@@ -47,14 +48,17 @@ public:
 	int FireAmmoConsumption = 1;
 	
 	bool bCanFire = true;
-	
+
 	void Fire();
 	void AlterFire();
+	void SetTankPawn(ATankPawn* Pawn);
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	ATankPawn* TankPawn;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

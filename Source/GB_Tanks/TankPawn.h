@@ -40,12 +40,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* GameCamera;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
+	TArray<TSubclassOf<ATankTowerType>> TankTowers;
 
-	void MoveForward(float forwardAxis);
-	void Rotate(float rotationValue);
+
+	void MoveForward(float ForwardAxis);
+	void Rotate(float RotationValue);
 	void Fire();
 	void AlterFire();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
+
+	void ChangeTowerByInput(float Value);
+	
 	ATankTowerType* SpawnTower(TSubclassOf<ATankTowerType> TowerType);
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
@@ -84,7 +90,7 @@ protected:
 	float ForwardScale = 0.f;
 	float CurrentSpeed = 0.f;
 	float CurrentHealth = MaxHealth;
-	
+	float CurrentTowerIndex = 0;
 
 public:	
 	// Called every frame

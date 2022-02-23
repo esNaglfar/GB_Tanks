@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPawn.h"
+
+#include <variant>
+
 #include "MainPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -32,15 +35,14 @@ ATankPawn::ATankPawn()
 	
 }
 
-void ATankPawn::MoveForward(float forwardAxis)
+void ATankPawn::MoveForward(float ForwardAxis)
 {
-	ForwardScale = forwardAxis;
+	ForwardScale = ForwardAxis;
 }
 
-
-void ATankPawn::Rotate(float rotationValue)
+void ATankPawn::Rotate(float RotationValue)
 {
-	RotationScale = rotationValue;
+	RotationScale = RotationValue;
 }
 
 void ATankPawn::Fire()
@@ -64,11 +66,25 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 	TankTower = SpawnTower(TowerType);
 }
 
+void ATankPawn::ChangeTowerByInput(float Value)
+{
+	if (Value == 0)
+		return;
+	if(TankTowers.Num() == 0)
+		return;
+	if(CurrentTowerIndex + Value >= 0 && CurrentTowerIndex + Value <= TankTowers.Num() - 1)
+	{
+		CurrentTowerIndex = FMath::Clamp(CurrentTowerIndex + Value, 0.f, TankTowers.Num() - 1.f);
+		ChangeTower(TankTowers[CurrentTowerIndex]);
+	}
+}
+
 ATankTowerType* ATankPawn::SpawnTower(TSubclassOf<ATankTowerType> TowerType)
 {
-	auto towersSawnPointTransform = TurretSpawnPoint->GetComponentTransform();
-	auto tankTower = GetWorld()->SpawnActor<ATankTowerType>(TowerType, towersSawnPointTransform);
+	auto towerSpawnPointTransform = TurretSpawnPoint->GetComponentTransform();
+	auto tankTower = GetWorld()->SpawnActor<ATankTowerType>(TowerType, towerSpawnPointTransform);
 	tankTower->AttachToComponent(TurretSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	tankTower->SetTankPawn(this);
 	return tankTower;
 }
 
@@ -93,7 +109,6 @@ void ATankPawn::Move(float DeltaTime)
 
 void ATankPawn::RotateTower(float DeltaTime)
 {
-	
 	FVector mousePos = TankController->GetMousePos();
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
 	FRotator currentRotation = TurretSpawnPoint->GetComponentRotation();
@@ -141,7 +156,7 @@ void ATankPawn::Tick(float DeltaTime)
 	RotateTank(DeltaTime); // Rotation of Body
 	RotateTower(DeltaTime); //Rotation of Tower
 
-	GEngine->AddOnScreenDebugMessage(400, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %f / %f"), CurrentHealth, MaxHealth));
+	GEngine->AddOnScreenDebugMessage(400, 10,FColor::Yellow, FString::Printf(TEXT(" Health : %f / %f"), CurrentHealth, MaxHealth));
 }
 
 // Called to bind functionality to input
