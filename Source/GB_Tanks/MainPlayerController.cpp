@@ -13,6 +13,7 @@ void AMainPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("Rotation",this,&AMainPlayerController::OnRotate);
 	InputComponent->BindAction("Fire", IE_Pressed,this ,&AMainPlayerController::OnFire);
 	InputComponent->BindAction("AlterFire", IE_Pressed,this ,&AMainPlayerController::OnAlterFire);
+	InputComponent->BindAction("AlterFire", IE_Released,this ,&AMainPlayerController::OnAlterFire);
 	InputComponent->BindAxis("NextTurret",this ,&AMainPlayerController::OnNextTurret);
 }
 
@@ -27,13 +28,10 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	FVector mouseDirection;
-	DeprojectMousePositionToWorld(MousePosition,mouseDirection);
-	FVector PawnPos = PlayerPawn->GetActorLocation();
-	MousePosition.Z = PawnPos.Z;
-	FVector Dir = MousePosition - PawnPos;
-	Dir.Normalize();
-	MousePosition = PawnPos + Dir * 1000.f;
+	FVector MouseDirection;
+	DeprojectMousePositionToWorld(MousePosition,MouseDirection);
+	auto Z = FMath::Abs(PlayerPawn->GetActorLocation().Z - MousePosition.Z);
+	MousePosition = MousePosition - MouseDirection * Z / MouseDirection.Z;
 }
 
 void AMainPlayerController::OnMoveForward(float Value)

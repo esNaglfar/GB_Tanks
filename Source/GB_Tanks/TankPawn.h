@@ -66,9 +66,7 @@ public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
 	float StoppingPower = 4.f;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
-	float TowerAccelerationSpeed = 2.f;
-
+	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Combat|Health")
 	float MaxHealth = 500.f;
 	
@@ -82,7 +80,6 @@ protected:
 	virtual void BeginPlay() override;
 	
 	void Move(float DeltaTime);
-	void RotateTower(float DeltaTime);
 	void RotateTank(float DeltaTime);
 	void Stop();
 	

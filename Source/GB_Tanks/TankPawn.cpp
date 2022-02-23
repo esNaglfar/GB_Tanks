@@ -56,7 +56,7 @@ void ATankPawn::AlterFire()
 {
 	if(!TankTower)
 		return;
-	TankTower->AlterFire();
+	TankTower->ChangeAlterFire();
 }
 
 void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
@@ -107,16 +107,6 @@ void ATankPawn::Move(float DeltaTime)
 	SetActorLocation(location + direction);
 }
 
-void ATankPawn::RotateTower(float DeltaTime)
-{
-	FVector mousePos = TankController->GetMousePos();
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
-	FRotator currentRotation = TurretSpawnPoint->GetComponentRotation();
-	targetRotation.Pitch = currentRotation.Pitch;
-	targetRotation.Roll = currentRotation.Roll;
-	TurretSpawnPoint->SetWorldRotation(FMath::Lerp(currentRotation,targetRotation,TowerAccelerationSpeed*DeltaTime));
-}
-
 void ATankPawn::RotateTank(float DeltaTime)
 {
 	float YawRotation = GetActorRotation().Yaw + RotationSpeed * DeltaTime * RotationScale * (ForwardScale >=0 ? 1 : -1);
@@ -154,9 +144,8 @@ void ATankPawn::Tick(float DeltaTime)
 	
 	Move(DeltaTime); // movement with acceleration
 	RotateTank(DeltaTime); // Rotation of Body
-	RotateTower(DeltaTime); //Rotation of Tower
 
-	GEngine->AddOnScreenDebugMessage(400, 10,FColor::Yellow, FString::Printf(TEXT(" Health : %f / %f"), CurrentHealth, MaxHealth));
+	GEngine->AddOnScreenDebugMessage(498, 10,FColor::Yellow, FString::Printf(TEXT(" Health : %f / %f"), CurrentHealth, MaxHealth));
 }
 
 // Called to bind functionality to input

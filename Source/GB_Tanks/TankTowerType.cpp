@@ -3,7 +3,9 @@
 
 #include "TankTowerType.h"
 
+#include "MainPlayerController.h"
 #include "TankPawn.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ATankTowerType::ATankTowerType()
@@ -28,16 +30,8 @@ void ATankTowerType::Fire()
 	if(!bCanFire)
 		return;
 
-	 bCanFire = false;
+	MakeShot("BANG!!!!");
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle,
-		FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
-		1/RateOfFire,
-		false,
-		1/RateOfFire);
-	
-	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" BANG BANG BANG "));
-	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
 }
 
 void ATankTowerType::AlterFire()
@@ -46,17 +40,16 @@ void ATankTowerType::AlterFire()
 		return;
 	if(!bCanFire)
 		return;
+	if(!bCanAlterFire)
+		return;
 
-	bCanFire = false;
 	
-	 GetWorld()->GetTimerManager().SetTimer(TimerHandle,
-	 	FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
-	 	1/RateOfFire,
-	 	false,
-	 	1/RateOfFire);
-	
-	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" PEW PEW PEW "));
-	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
+	MakeShot("PEW PEW PEW!!!!");
+}
+
+void ATankTowerType::ChangeAlterFire()
+{
+	bCanAlterFire = !bCanAlterFire;
 }
 
 void ATankTowerType::SetTankPawn(ATankPawn* Pawn)
@@ -67,6 +60,31 @@ void ATankTowerType::SetTankPawn(ATankPawn* Pawn)
 void ATankTowerType::ResetFireState()
 {
 	bCanFire = true;
+}
+
+void ATankTowerType::RotateTower()
+{
+	if(!TankPawn)
+		return;
+	FVector mousePos = TankPawn->TankController->GetMousePos();
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+	FRotator currentRotation = GetActorRotation();
+	targetRotation.Pitch = currentRotation.Pitch;
+	targetRotation.Roll = currentRotation.Roll;
+	SetActorRotation(FMath::Lerp(currentRotation,targetRotation,RotationAcceleration*GetWorld()->GetDeltaSeconds()));
+}
+
+
+void ATankTowerType::MakeShot(FString text) // text for a while...
+{
+	bCanFire = false;
+	GEngine->AddOnScreenDebugMessage(-1, 1/RateOfFire,FColor::Green, text);
+	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,
+		FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
+		1/RateOfFire,
+		false,
+		1/RateOfFire);
 }
 
 
@@ -81,6 +99,10 @@ void ATankTowerType::BeginPlay()
 void ATankTowerType::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	RotateTower();
+	AlterFire();
+	
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),
 		GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle) + 1.f));
