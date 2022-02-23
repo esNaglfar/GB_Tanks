@@ -74,6 +74,7 @@ public:
 	
 	AMainPlayerController* TankController;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Misc")
 	ATankTowerType* TankTower;
 
 protected:

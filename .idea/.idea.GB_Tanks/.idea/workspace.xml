@@ -10,12 +10,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8fa23acd-6418-4aba-9d8e-7c4911115d18" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/MachinegunTower.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/MachinegunTower.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" afterDir="false" />
@@ -270,7 +267,7 @@
       <option name="presentableId" value="Default" />
       <updated>1645580033599</updated>
       <workItem from="1645580079732" duration="11085000" />
-      <workItem from="1645611163440" duration="6521000" />
+      <workItem from="1645611163440" duration="9798000" />
     </task>
     <servers />
   </component>

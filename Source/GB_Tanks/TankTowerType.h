@@ -42,16 +42,20 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	int MaxAmmo = 20;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Combat")
 	int CurrentAmmo;
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	int FireAmmoConsumption = 1;
 	
 	bool bCanFire = true;
+	FTimerHandle TimerHandle;
 
 	void Fire();
 	void AlterFire();
 	void SetTankPawn(ATankPawn* Pawn);
+	void ResetFireState();
+	
 	
 protected:
 	// Called when the game starts or when spawned

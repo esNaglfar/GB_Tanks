@@ -27,6 +27,14 @@ void ATankTowerType::Fire()
 		return;
 	if(!bCanFire)
 		return;
+
+	 bCanFire = false;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,
+		FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
+		1/RateOfFire,
+		false,
+		1/RateOfFire);
 	
 	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" BANG BANG BANG "));
 	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
@@ -38,6 +46,14 @@ void ATankTowerType::AlterFire()
 		return;
 	if(!bCanFire)
 		return;
+
+	bCanFire = false;
+	
+	 GetWorld()->GetTimerManager().SetTimer(TimerHandle,
+	 	FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
+	 	1/RateOfFire,
+	 	false,
+	 	1/RateOfFire);
 	
 	GEngine->AddOnScreenDebugMessage(-1, 3,FColor::Green, TEXT(" PEW PEW PEW "));
 	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
@@ -46,6 +62,11 @@ void ATankTowerType::AlterFire()
 void ATankTowerType::SetTankPawn(ATankPawn* Pawn)
 {
 	TankPawn = Pawn;
+}
+
+void ATankTowerType::ResetFireState()
+{
+	bCanFire = true;
 }
 
 
@@ -61,6 +82,8 @@ void ATankTowerType::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
+	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),
+		GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle) + 1.f));
 
 }
 
