@@ -17,8 +17,6 @@ ATankTowerType::ATankTowerType()
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>("Projectile spawn point");
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
 
-	
-
 }
 
 // Called when the game starts or when spawned

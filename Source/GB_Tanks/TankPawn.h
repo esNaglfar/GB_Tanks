@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TankTowerType.h"
 #include "Camera/CameraComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -27,7 +29,13 @@ public:
 	UStaticMeshComponent* TankBase;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* TankTower;
+	UArrowComponent* TurretSpawnPoint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
+	TSubclassOf<ATankTowerType> TankTowerType;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	//UStaticMeshComponent* TankTower;
+	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USpringArmComponent* CameraArm;
@@ -75,7 +83,8 @@ private:
 	void RotateTower(float DeltaTime);
 	void RotateTank(float DeltaTime);
 	void Stop();
-	
+
+	ATankTowerType* TankTower;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

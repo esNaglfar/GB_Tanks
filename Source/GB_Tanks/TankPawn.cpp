@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MainPlayerController.h"
 #include "TankPawn.h"
+#include "MainPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -16,8 +16,8 @@ ATankPawn::ATankPawn()
 	TankBase = CreateDefaultSubobject<UStaticMeshComponent>("TankBase");
 	TankBase->SetupAttachment(RootComponent);
 
-	TankTower = CreateDefaultSubobject<UStaticMeshComponent>("TankTower");
-	TankTower->SetupAttachment(TankBase);
+	TurretSpawnPoint = CreateDefaultSubobject<UArrowComponent>("TankTower");
+	TurretSpawnPoint->SetupAttachment(TankBase);
 	
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>("CameraArm");
 	CameraArm->SetupAttachment(RootComponent);
@@ -73,10 +73,10 @@ void ATankPawn::RotateTower(float DeltaTime)
 	
 	FVector mousePos = controller->GetMousePos();
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
-	FRotator currentRotation = TankTower->GetComponentRotation();
+	FRotator currentRotation = TurretSpawnPoint->GetComponentRotation();
 	targetRotation.Pitch = currentRotation.Pitch;
 	targetRotation.Roll = currentRotation.Roll;
-	TankTower->SetWorldRotation(FMath::Lerp(currentRotation,targetRotation,towerAcceleration*DeltaTime));
+	TurretSpawnPoint->SetWorldRotation(FMath::Lerp(currentRotation,targetRotation,towerAcceleration*DeltaTime));
 }
 
 void ATankPawn::RotateTank(float DeltaTime)
@@ -99,7 +99,12 @@ void ATankPawn::Stop()
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	controller = Cast<AMainPlayerController>(GetController());
+	
+	auto towertSpawnPointTransform = TurretSpawnPoint->GetComponentTransform();
+	TankTower = GetWorld()->SpawnActor<ATankTowerType>(TankTowerType, towertSpawnPointTransform);
+	TankTower->AttachToComponent(TurretSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 }
 
 bool ATankPawn::IsPositive(float value)
