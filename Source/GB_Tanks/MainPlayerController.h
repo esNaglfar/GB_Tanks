@@ -25,7 +25,8 @@ class GB_TANKS_API AMainPlayerController : public APlayerController
 	void OnMoveForward(float Value);
 	void OnRotate(float Value);
 	void OnFire();
-	void OnAlterFire();
+	void OnAlterFireOn();
+	void OnAlterFireOff();
 	void OnNextTurret(float Value);
 
 public:

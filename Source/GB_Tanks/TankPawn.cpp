@@ -32,7 +32,7 @@ ATankPawn::ATankPawn()
 	CameraArm->bInheritYaw = false;
 	CameraArm->bInheritRoll = false;
 	CameraArm->TargetArmLength = 2500.f;
-	
+
 }
 
 void ATankPawn::MoveForward(float ForwardAxis)
@@ -52,11 +52,18 @@ void ATankPawn::Fire()
 	TankTower->Fire();
 }
 
-void ATankPawn::AlterFire()
+void ATankPawn::AlterFireOn()
 {
 	if(!TankTower)
 		return;
-	TankTower->ChangeAlterFire();
+	TankTower->AlterFireOn();
+}
+
+void ATankPawn::AlterFireOff()
+{
+	if(!TankTower)
+		return;
+	TankTower->AlterFireOff();
 }
 
 void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
@@ -72,11 +79,10 @@ void ATankPawn::ChangeTowerByInput(float Value)
 		return;
 	if(TankTowers.Num() == 0)
 		return;
-	if(CurrentTowerIndex + Value >= 0 && CurrentTowerIndex + Value <= TankTowers.Num() - 1)
-	{
-		CurrentTowerIndex = FMath::Clamp(CurrentTowerIndex + Value, 0.f, TankTowers.Num() - 1.f);
-		ChangeTower(TankTowers[CurrentTowerIndex]);
-	}
+	
+	CurrentTowerIndex = FMath::Clamp(CurrentTowerIndex + Value, 0.f, TankTowers.Num() - 1.f);
+	
+	ChangeTower(TankTowers[CurrentTowerIndex]);
 }
 
 ATankTowerType* ATankPawn::SpawnTower(TSubclassOf<ATankTowerType> TowerType)
@@ -118,7 +124,7 @@ void ATankPawn::Stop()
 {
 	if(CurrentSpeed != 0.f)
 	{
-		CurrentSpeed += Acceleration * CurrentSpeed / FMath::Abs(CurrentSpeed) * -StoppingPower * GetWorld()->DeltaTimeSeconds;
+		CurrentSpeed += Acceleration * FMath::Sign(CurrentSpeed) * -StoppingPower * GetWorld()->DeltaTimeSeconds;
 		if (FMath::Abs(CurrentSpeed) <= 4) CurrentSpeed = 0.f;
 	}
 }

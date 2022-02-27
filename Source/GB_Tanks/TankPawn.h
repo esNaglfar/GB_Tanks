@@ -13,6 +13,8 @@
 
 class AMainPlayerController;
 
+
+
 UCLASS(Blueprintable)
 class GB_TANKS_API ATankPawn : public APawn
 {
@@ -43,14 +45,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
 	TArray<TSubclassOf<ATankTowerType>> TankTowers;
 
-
 	void MoveForward(float ForwardAxis);
 	void Rotate(float RotationValue);
 	void Fire();
-	void AlterFire();
+	void AlterFireOn();
+	void AlterFireOff();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
 
 	void ChangeTowerByInput(float Value);
+
+	TArray<ATankTowerType> PersistentTankTowers;
 	
 	ATankTowerType* SpawnTower(TSubclassOf<ATankTowerType> TowerType);
 
@@ -71,7 +75,7 @@ public:
 	float MaxHealth = 500.f;
 	
 	AMainPlayerController* TankController;
-
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Misc")
 	ATankTowerType* TankTower;
 
@@ -82,7 +86,6 @@ protected:
 	void Move(float DeltaTime);
 	void RotateTank(float DeltaTime);
 	void Stop();
-	
 
 	float RotationScale = 0.f;
 	float ForwardScale = 0.f;

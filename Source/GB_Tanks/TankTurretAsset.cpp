@@ -11,9 +11,18 @@ ATankTurretAsset::ATankTurretAsset()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+	
 	Collision = CreateDefaultSubobject<USphereComponent>("Collision sphere");
 	Collision->SetupAttachment(RootComponent);
-	TowerMesh = CreateDefaultSubobject<UStaticMeshComponent>("Tower mesh");
+	
+	AssetMesh = CreateDefaultSubobject<UStaticMeshComponent>("Asset Mesh");
+	AssetMesh->SetupAttachment(RootComponent);
+
+	AssetMesh->OnComponentBeginOverlap.AddDynamic(this, &ATankTurretAsset::OnComponentBeginOverlap);
+	AssetMesh->SetCollisionProfileName(FName("OverlapAll"));
+	AssetMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	AssetMesh->SetGenerateOverlapEvents(true);
+	
 }
 
 
@@ -21,28 +30,23 @@ ATankTurretAsset::ATankTurretAsset()
 void ATankTurretAsset::BeginPlay()
 {
 	Super::BeginPlay();
-	Collision->OnComponentBeginOverlap.AddDynamic(this, &ATankTurretAsset::OnOverlapBegin);
 }
 
-void ATankTurretAsset::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+void ATankTurretAsset::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1,20,FColor::Green,"Hit");
-	if(!Cast<ATankPawn>(OtherActor))
-		return;
+	GEngine->AddOnScreenDebugMessage(-1,20,FColor::Green,"Hit!!!");
+	
 	Cast<ATankPawn>(OtherActor)->ChangeTower(TowerType);
+	
 	this->Destroy();
 }
 
 void ATankTurretAsset::FloatAndRotate(float DeltaTime)
 {
-	//auto CurLocation = TowerMesh->GetComponentLocation();
-	//CurLocation.Z = CurLocation.Z + FMath::Sin(GetWorld()->GetTimeSeconds()) * FloatAmplitude * DeltaTime;
-	//TowerMesh->SetRelativeLocation(CurLocation);
-
-	//auto CurRotation = GetActorRotation();
-	//CurRotation.Yaw = CurRotation.Yaw + FloatRotationSpeed * DeltaTime;
-	//SetActorRotation(CurRotation);
+	auto CurRotation = GetActorRotation();
+	CurRotation.Yaw = CurRotation.Yaw + FloatRotationSpeed * DeltaTime;
+	SetActorRotation(CurRotation);
 }
 
 

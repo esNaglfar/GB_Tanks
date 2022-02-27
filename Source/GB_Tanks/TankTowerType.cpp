@@ -3,6 +3,8 @@
 
 #include "TankTowerType.h"
 
+
+#include "DrawDebugHelpers.h"
 #include "MainPlayerController.h"
 #include "TankPawn.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -34,23 +36,24 @@ void ATankTowerType::Fire()
 
 }
 
-void ATankTowerType::AlterFire()
+void ATankTowerType::AlterFireOn()
 {
-	if(CurrentAmmo <= 0)
-		return;
 	if(!bCanFire)
 		return;
-	if(!bCanAlterFire)
-		return;
-
 	
-	MakeShot("PEW PEW PEW!!!!");
+	bIsAlterFire = true;
+	GEngine->AddOnScreenDebugMessage(1,2,FColor::Yellow,"ALTER ON");
+	GetWorld()->GetTimerManager().SetTimer(AlterFireHandle, this, &ATankTowerType::Fire, AlterRateOfFire, true,0.f);
+	
 }
 
-void ATankTowerType::ChangeAlterFire()
+void ATankTowerType::AlterFireOff()
 {
-	bCanAlterFire = !bCanAlterFire;
+	bIsAlterFire = false;
+	GEngine->AddOnScreenDebugMessage(1,2,FColor::Yellow,"ALTER OFF");
+	GetWorld()->GetTimerManager().ClearTimer(AlterFireHandle);
 }
+
 
 void ATankTowerType::SetTankPawn(ATankPawn* Pawn)
 {
@@ -77,14 +80,57 @@ void ATankTowerType::RotateTower()
 
 void ATankTowerType::MakeShot(FString text) // text for a while...
 {
+	if(!bIsAlterFire)
 	bCanFire = false;
+
+	if(Firetype == ETurretFiretype::FireProjectile)
+	{
+		auto projectile = GetWorld()->SpawnActor<ADefaultProjectile>(
+			Projectile,
+			ProjectileSpawnPoint->GetComponentLocation(),
+			ProjectileSpawnPoint->GetComponentRotation()
+			);
+
+		if(projectile)
+			projectile->Launch();
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "LASER PEW");
+		FHitResult hitResult;
+		
+		FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
+		traceParams.bTraceComplex = true;
+		traceParams.bReturnPhysicalMaterial = false;
+
+		FVector start = ProjectileSpawnPoint->GetComponentLocation();
+		FVector end = ProjectileSpawnPoint->GetForwardVector() * LaserAtackRange + start;
+
+		if(GetWorld()->LineTraceSingleByChannel(hitResult, start, end, ECollisionChannel::ECC_Visibility, traceParams))
+		{
+			DrawDebugLine(GetWorld(), start, hitResult.Location, FColor::Red, false, 0.5f, 0,5.f);
+			if(hitResult.Actor.Get())
+			{
+				hitResult.GetActor()->Destroy();
+			}
+		}
+		
+	}
 	GEngine->AddOnScreenDebugMessage(-1, 1/RateOfFire,FColor::Green, text);
+	
 	CurrentAmmo = FMath::Clamp(CurrentAmmo - FireAmmoConsumption, 0, MaxAmmo);
+	
+	if(!bIsAlterFire)
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,
 		FTimerDelegate::CreateUObject(this,&ATankTowerType::ResetFireState),
 		1/RateOfFire,
 		false,
 		1/RateOfFire);
+}
+
+void ATankTowerType::AddAmmo(int amount)
+{
+	CurrentAmmo = FMath::Clamp(CurrentAmmo + amount,0,MaxAmmo);
 }
 
 
@@ -101,7 +147,6 @@ void ATankTowerType::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	RotateTower();
-	AlterFire();
 	
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),
