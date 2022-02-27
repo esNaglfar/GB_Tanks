@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DefaultProjectile.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/Actor.h"
 #include "TankTowerType.generated.h"
@@ -53,18 +54,30 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Combat")
 	int FireAmmoConsumption = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	TSubclassOf<ADefaultProjectile> Projectile;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	float LaserAtackRange = 3000.f;
 	
 	bool bCanFire = true;
 	bool bCanAlterFire = false;
+	bool bIsAlterFire = false;
+	
 	FTimerHandle TimerHandle;
+	FTimerHandle AlterFireHandle;
 
 	void Fire();
-	void AlterFire();
-	void ChangeAlterFire();
+	void AlterFireOn();
+	void AlterFireOff();
 	void SetTankPawn(ATankPawn* Pawn);
 	void ResetFireState();
 	void RotateTower();
 	void MakeShot(FString text);
+	void AddAmmo(int amount);
+
+	
 	
 	
 protected:

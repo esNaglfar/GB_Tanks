@@ -10,9 +10,22 @@
   <component name="ChangeListManager">
     <list default="true" id="8fa23acd-6418-4aba-9d8e-7c4911115d18" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/BigTurretAsset.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/LargeProjectileTower.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/MachinegunTower.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/CSC/Materials/M_ACS18.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/CSC/Materials/M_ACS18.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Levels/Arena.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Arena.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/MainPlayerController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTurretAsset.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTurretAsset.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTurretAsset.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTurretAsset.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +33,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE/Epic Games/UE_4.27/Engine/Source/ThirdParty/Crunch/include/crnlib.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -265,7 +281,8 @@
       <updated>1645580033599</updated>
       <workItem from="1645580079732" duration="11085000" />
       <workItem from="1645611163440" duration="18496000" />
-      <workItem from="1645634431080" duration="4630000" />
+      <workItem from="1645634431080" duration="6595000" />
+      <workItem from="1645727493208" duration="21187000" />
     </task>
     <servers />
   </component>

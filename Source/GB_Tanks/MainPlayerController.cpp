@@ -12,8 +12,8 @@ void AMainPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("ForwardAxis",this,&AMainPlayerController::OnMoveForward);
 	InputComponent->BindAxis("Rotation",this,&AMainPlayerController::OnRotate);
 	InputComponent->BindAction("Fire", IE_Pressed,this ,&AMainPlayerController::OnFire);
-	InputComponent->BindAction("AlterFire", IE_Pressed,this ,&AMainPlayerController::OnAlterFire);
-	InputComponent->BindAction("AlterFire", IE_Released,this ,&AMainPlayerController::OnAlterFire);
+	InputComponent->BindAction("AlterFire", IE_Pressed,this ,&AMainPlayerController::OnAlterFireOn);
+	InputComponent->BindAction("AlterFire", IE_Released,this ,&AMainPlayerController::OnAlterFireOff);
 	InputComponent->BindAxis("NextTurret",this ,&AMainPlayerController::OnNextTurret);
 }
 
@@ -51,9 +51,14 @@ void AMainPlayerController::OnFire()
 	PlayerPawn->Fire();
 }
 
-void AMainPlayerController::OnAlterFire()
+void AMainPlayerController::OnAlterFireOn()
 {
-	PlayerPawn->AlterFire();
+	PlayerPawn->AlterFireOn();
+}
+
+void AMainPlayerController::OnAlterFireOff()
+{
+	PlayerPawn->AlterFireOff();
 }
 
 void AMainPlayerController::OnNextTurret(float Value)
