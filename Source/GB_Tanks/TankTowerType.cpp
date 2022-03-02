@@ -65,12 +65,10 @@ void ATankTowerType::ResetFireState()
 	bCanFire = true;
 }
 
-void ATankTowerType::RotateTower()
+
+void ATankTowerType::RotateTower(FVector LookAtPoint)
 {
-	if(!TankPawn)
-		return;
-	FVector mousePos = TankPawn->TankController->GetMousePos();
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtPoint);
 	FRotator currentRotation = GetActorRotation();
 	targetRotation.Pitch = currentRotation.Pitch;
 	targetRotation.Roll = currentRotation.Roll;
@@ -146,7 +144,7 @@ void ATankTowerType::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	RotateTower();
+	//RotateTower();
 	
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),

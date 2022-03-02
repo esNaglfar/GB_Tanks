@@ -73,7 +73,9 @@ public:
 	void AlterFireOff();
 	void SetTankPawn(ATankPawn* Pawn);
 	void ResetFireState();
-	void RotateTower();
+	
+	void RotateTower(FVector LookAtPoint);
+	
 	void MakeShot(FString text);
 	void AddAmmo(int amount);
 

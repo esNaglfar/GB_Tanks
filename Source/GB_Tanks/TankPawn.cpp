@@ -73,6 +73,11 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 	TankTower = SpawnTower(TowerType);
 }
 
+void ATankPawn::RotateTower()
+{
+	TankTower->RotateTower(TankController->GetMousePos());
+}
+
 void ATankPawn::ChangeTowerByInput(float Value)
 {
 	if (Value == 0)
@@ -139,6 +144,9 @@ void ATankPawn::BeginPlay()
 	if(!TankTowerTypeBase)
 		return;
 	ChangeTower(TankTowerTypeBase);
+
+	GetWorld()->GetTimerManager().SetTimer(RotationHandle,this, &ATankPawn::RotateTower,TowerRotationTimeDelta, true
+		, TowerRotationTimeDelta);
 }
 
 // Called every frame

@@ -52,6 +52,9 @@ public:
 	void AlterFireOff();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
 
+	UFUNCTION()
+	void RotateTower();
+
 	void ChangeTowerByInput(float Value);
 
 	TArray<ATankTowerType> PersistentTankTowers;
@@ -60,7 +63,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
 	float RotationSpeed = 60.f;
-
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Rotation")
+	float TowerRotationTimeDelta = 0.015f;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
 	float MaxSpeed = 350.f;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement|Speed")
@@ -79,12 +83,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Misc")
 	ATankTowerType* TankTower;
 
+	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	void Move(float DeltaTime);
 	void RotateTank(float DeltaTime);
+	
 	void Stop();
 
 	float RotationScale = 0.f;
@@ -92,6 +99,7 @@ protected:
 	float CurrentSpeed = 0.f;
 	float CurrentHealth = MaxHealth;
 	float CurrentTowerIndex = 0;
+	FTimerHandle RotationHandle;
 
 public:	
 	// Called every frame
