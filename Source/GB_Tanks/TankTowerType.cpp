@@ -5,7 +5,6 @@
 
 
 #include "DrawDebugHelpers.h"
-#include "MainPlayerController.h"
 #include "TankPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 
