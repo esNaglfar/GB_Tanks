@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Destroyable.h"
 #include "TankTowerType.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -16,7 +17,7 @@ class AMainPlayerController;
 
 
 UCLASS(Blueprintable)
-class GB_TANKS_API ATankPawn : public APawn
+class GB_TANKS_API ATankPawn : public APawn, public IDestroyable
 {
 	GENERATED_BODY()
 
@@ -51,6 +52,8 @@ public:
 	void AlterFireOn();
 	void AlterFireOff();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
+
+	virtual void TakeDamage(FDamageInfo Info) override;
 
 	UFUNCTION()
 	void RotateTower();

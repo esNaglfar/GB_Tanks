@@ -8,36 +8,95 @@
 
 bool AAutoTurret::IsAimed()
 {
-	return false;
+	auto TurretDirection = Tower->GetActorForwardVector();
+	auto EnemyDirection = (Target->GetActorLocation() - GetActorLocation());
+	EnemyDirection.Normalize();
+
+	auto angle = FMath::Acos(FVector::DotProduct(TurretDirection,EnemyDirection));
+
+	return angle < Accuracy ? true : false;
 }
 
 void AAutoTurret::RotateToTarget()
 {
-	if(!Target)
+	if(!Tower)
+		return;
+	if(!Target.IsValid())
 		return;
 	Tower->RotateTower(Target->GetActorLocation());
-	if(IsAimed())
+	if(IsAimed() && IsTargetInRange())
 	Tower->Fire();
 }
 
 bool AAutoTurret::IsTargetInRange()
 {
-	return (GetActorLocation() - Target->GetActorLocation()).Size() <= TargetingRange;
+	return FVector::Distance(GetActorLocation(), Target->GetActorLocation()) <= TargetingRange;
+}
+
+bool AAutoTurret::InLineOfSight()
+{
+	FHitResult HitResult;
+
+	FCollisionQueryParams Params = FCollisionQueryParams(FName(TEXT("SightTrace")), true, this);
+	Params.bTraceComplex = true;
+	Params.bReturnPhysicalMaterial = false;
+	Params.bDebugQuery = true;
+
+	FVector start = Tower->GetActorLocation();
+	FVector end = Target->GetActorLocation();
+	
+	if(GetWorld()->LineTraceSingleByChannel(HitResult, start,end, ECC_Visibility, Params))
+	{
+		return (HitResult.GetActor() == Target) ? true : false;
+	}
+		return false;
 }
 
 void AAutoTurret::TargetEliminated()
 {
+	
+}
+
+void AAutoTurret::GetClosestTarget()
+{
+	float MinimalRange = 9999999.f;
+	for(auto target: Targets)
+	{
+		float Distance = FVector::Distance(GetActorLocation(), target->GetActorLocation());
+		if (Distance < MinimalRange)
+		{
+			MinimalRange = Distance;
+			Target = target;
+		}
+	}
+}
+
+void AAutoTurret::TakeDamage(FDamageInfo Info)
+{
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"Tank taking damage");
 }
 
 void AAutoTurret::OnSensorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1,5, FColor::Red,"ENEMY HERE!!!");
-	
-	if(!Cast<ATankPawn>(OtherActor))
-		return;
+	if(static ATankPawn* target = Cast<ATankPawn>(OtherActor))
+	{
+		Targets.AddUnique(target);
+		if(!Target.IsValid())
+		{
+			GetClosestTarget();
+		}
+	}
+}
 
-	Target = OtherActor;
+void AAutoTurret::OnSensorEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+
+{
+	if(static auto target = Cast<ATankPawn>(OtherActor))
+	{
+		Targets.Remove(target);
+	}
 }
 
 // Sets default values
@@ -47,6 +106,7 @@ AAutoTurret::AAutoTurret()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	
 	TowerMesh = CreateDefaultSubobject<UStaticMeshComponent>("Turret mesh");
 	TowerMesh->SetupAttachment(RootComponent);
 
@@ -56,24 +116,31 @@ AAutoTurret::AAutoTurret()
 	FoeDetector = CreateDefaultSubobject<USphereComponent>("Foe Detector");
 	FoeDetector->SetupAttachment(RootComponent);
 	FoeDetector->SetSphereRadius(TargetingRange);
-	FoeDetector->OnComponentBeginOverlap.AddDynamic(this, &AAutoTurret::OnSensorOverlap); // <------------------- НЕ ГЕНЕРИТ СОБЫТИЯ
-	FoeDetector->bHiddenInGame = false;
+	
+	
 }
 
 // Called when the game starts or when spawned
 void AAutoTurret::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->GetTimerManager().SetTimer(TargetingHandler,this,&AAutoTurret::RotateToTarget,TargetingSpeed, true, TargetingSpeed);
+	
 	auto towerSpawnPointTransform = TowerSlot->GetComponentTransform();
-	auto tankTower = GetWorld()->SpawnActor<ATankTowerType>(TowerType, towerSpawnPointTransform);
-	tankTower->AttachToComponent(TowerSlot, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	Tower = GetWorld()->SpawnActor<ATankTowerType>(TowerType, towerSpawnPointTransform);
+	Tower->AttachToComponent(TowerSlot, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	Tower->bIsTurret = true;
+	GetWorld()->GetTimerManager().SetTimer(TargetingHandler,this,&AAutoTurret::RotateToTarget,TargetingSpeed, true, TargetingSpeed);
+
+	FoeDetector->OnComponentBeginOverlap.AddDynamic(this, &AAutoTurret::OnSensorOverlap);
+	FoeDetector->OnComponentEndOverlap.AddDynamic(this, &AAutoTurret::OnSensorEndOverlap);
+
+	Target = nullptr;
 }
 
 // Called every frame
 void AAutoTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	GEngine->AddOnScreenDebugMessage(-1,0,FColor::Yellow,FString::Printf(TEXT("%i"),Targets.Num()));
 }
 

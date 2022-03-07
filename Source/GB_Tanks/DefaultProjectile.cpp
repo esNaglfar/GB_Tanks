@@ -3,6 +3,8 @@
 
 #include "DefaultProjectile.h"
 
+#include "Destroyable.h"
+
 // Sets default values
 ADefaultProjectile::ADefaultProjectile()
 {
@@ -18,16 +20,25 @@ ADefaultProjectile::ADefaultProjectile()
 	
 }
 
-void ADefaultProjectile::Launch()
+void ADefaultProjectile::Launch(AActor* _Owner)
 {
 	GetWorld()->GetTimerManager().SetTimer(MovementTimerHandle, this, &ADefaultProjectile::Move, MoveRate, true, MoveRate);
+	Owner = _Owner;
 }
 
 void ADefaultProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	auto target = Cast<IDestroyable>(OtherActor);
+	if(!target)
+		return;
+	
 	UE_LOG(LogTemp, Warning, TEXT("%s hitted the %s. "), *GetName(), *OtherActor->GetName());
-	OtherActor->Destroy();
+	FDamageInfo Info;
+	Info.DamageAmount = Damage;
+	Info.DamageSource = this;
+	Info.DamageSourceOwner = Owner;
+	target->TakeDamage(Info);
 	this->Destroy();
 }
 

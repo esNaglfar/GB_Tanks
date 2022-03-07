@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Destroyable.h"
 #include "TankTowerType.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -11,10 +12,9 @@
 #include "AutoTurret.generated.h"
 
 UCLASS()
-class GB_TANKS_API AAutoTurret : public AActor
+class GB_TANKS_API AAutoTurret : public AActor, public IDestroyable
 {
-	GENERATED_BODY()
-
+	GENERATED_BODY() 
 public:
 
 	UPROPERTY(BlueprintReadWrite,VisibleDefaultsOnly,Category="Components")
@@ -33,37 +33,47 @@ public:
 	USphereComponent* FoeDetector;
 
 	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category="Components")
-	float Accuracy = 10.f;
+	float Accuracy = 0.35f;
 
 	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category="Components")
-	float TargetingRange = 350.f;
+	float TargetingRange = 900.f;
 	
 	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category="Components")
 	float TargetingSpeed = 0.01f;
 	
 	UPROPERTY()
-	AActor* Target;
+	TWeakObjectPtr<ATankPawn> Target;
 
 	UPROPERTY()
 	ATankTowerType* Tower;
-	
 
 	FTimerHandle TargetingHandler;
-
+	
 	bool IsAimed();
 	void RotateToTarget();
 	bool IsTargetInRange();
-
+	bool InLineOfSight();
 	void TargetEliminated();
+	void GetClosestTarget();
 
-	void OnSensorOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
+	virtual void TakeDamage(FDamageInfo Info) override;
+	
+	UFUNCTION()
+	void OnSensorOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnSensorEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 	// Sets default values for this actor's properties
 	AAutoTurret();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+private:
+	TArray<ATankPawn*> Targets;
 
 public:	
 	// Called every frame

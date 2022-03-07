@@ -69,8 +69,11 @@ void ATankTowerType::RotateTower(FVector LookAtPoint)
 {
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtPoint);
 	FRotator currentRotation = GetActorRotation();
-	targetRotation.Pitch = currentRotation.Pitch;
-	targetRotation.Roll = currentRotation.Roll;
+	if(!bIsTurret)
+	{
+		targetRotation.Pitch = currentRotation.Pitch;
+		targetRotation.Roll = currentRotation.Roll;
+	}
 	SetActorRotation(FMath::Lerp(currentRotation,targetRotation,RotationAcceleration*GetWorld()->GetDeltaSeconds()));
 }
 
@@ -89,11 +92,10 @@ void ATankTowerType::MakeShot(FString text) // text for a while...
 			);
 
 		if(projectile)
-			projectile->Launch();
+			projectile->Launch(this);
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "LASER PEW");
 		FHitResult hitResult;
 		
 		FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);

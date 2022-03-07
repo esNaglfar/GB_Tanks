@@ -22,13 +22,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
 	float Damage = 75.f;
 
+	AActor* Owner;
 	FTimerHandle MovementTimerHandle;	
 	
 public:	
 	// Sets default values for this actor's properties
 	ADefaultProjectile();
 
-	void Launch();
+	void Launch(AActor* _Owner);
 
 protected:
 	// Called when the game starts or when spawned

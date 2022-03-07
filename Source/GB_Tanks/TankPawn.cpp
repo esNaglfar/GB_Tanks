@@ -32,6 +32,7 @@ ATankPawn::ATankPawn()
 	CameraArm->bInheritYaw = false;
 	CameraArm->bInheritRoll = false;
 	CameraArm->TargetArmLength = 2500.f;
+	CameraArm->bDoCollisionTest = false;
 
 }
 
@@ -71,6 +72,11 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 	if(TankTower)
 	TankTower->Destroy();
 	TankTower = SpawnTower(TowerType);
+}
+
+void ATankPawn::TakeDamage(FDamageInfo Info)
+{
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red, "Taking damage");
 }
 
 void ATankPawn::RotateTower()

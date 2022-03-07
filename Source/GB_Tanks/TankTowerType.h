@@ -60,6 +60,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
 	float LaserAtackRange = 3000.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Control")
+	bool bIsTurret = false;
 	
 	bool bCanFire = true;
 	bool bCanAlterFire = false;
