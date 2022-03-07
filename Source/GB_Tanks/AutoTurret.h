@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Destroyable.h"
+#include "HealthSystem.h"
 #include "TankTowerType.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -40,14 +41,25 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category="Components")
 	float TargetingSpeed = 0.01f;
+
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly, Category="Components")
+	UHealthSystem* HealthSystem;
 	
 	UPROPERTY()
 	TWeakObjectPtr<ATankPawn> Target;
+
+	
+	UFUNCTION()
+	void Death();
+
+	UFUNCTION()
+	void DamageTaken(float Amount);
 
 	UPROPERTY()
 	ATankTowerType* Tower;
 
 	FTimerHandle TargetingHandler;
+	
 	
 	bool IsAimed();
 	void RotateToTarget();
@@ -56,7 +68,6 @@ public:
 	void TargetEliminated();
 	void GetClosestTarget();
 
-	
 	virtual void TakeDamage(FDamageInfo Info) override;
 	
 	UFUNCTION()

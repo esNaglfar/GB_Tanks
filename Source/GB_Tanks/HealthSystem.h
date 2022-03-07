@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Destroyable.h"
 #include "Components/ActorComponent.h"
 #include "HealthSystem.generated.h"
 
@@ -12,9 +13,28 @@ class GB_TANKS_API UHealthSystem : public UActorComponent
 {
 	GENERATED_BODY()
 
+		DECLARE_EVENT(FHealthSystem, FOnDie)
+		DECLARE_EVENT_OneParam(FHealthSystem, FOnHealthChanged, float)
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Health")
+	float MaxHealth = 100.f;
+	
+	UPROPERTY()
+	float Health;
+
 public:	
 	// Sets default values for this component's properties
 	UHealthSystem();
+
+	FOnDie OnDie;
+	FOnHealthChanged OnDamage;
+
+	void TakeDamage(float Amount);
+	float GetHealth() const;
+	float GetHealthState() const;
+	void AddHealth(float Amount);
+	
 
 protected:
 	// Called when the game starts

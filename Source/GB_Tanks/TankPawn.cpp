@@ -34,7 +34,25 @@ ATankPawn::ATankPawn()
 	CameraArm->TargetArmLength = 2500.f;
 	CameraArm->bDoCollisionTest = false;
 
+	HealthSystem = CreateDefaultSubobject<UHealthSystem>("Health System");
+
+	HealthSystem->OnDie.AddUObject(this, &ATankPawn::OnDeath);
+	HealthSystem->OnDamage.AddUObject(this, &ATankPawn::OnDamageTaken);
+
 }
+
+
+void ATankPawn::OnDamageTaken(float Amount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), Amount, HealthSystem->GetHealth());
+}
+
+void ATankPawn::OnDeath()
+{
+	TankTower->Destroy();
+	Destroy();
+}
+
 
 void ATankPawn::MoveForward(float ForwardAxis)
 {
@@ -76,7 +94,7 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 
 void ATankPawn::TakeDamage(FDamageInfo Info)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red, "Taking damage");
+	HealthSystem->TakeDamage(Info.DamageAmount);
 }
 
 void ATankPawn::RotateTower()

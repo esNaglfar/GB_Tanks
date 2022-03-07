@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Destroyable.h"
+#include "HealthSystem.h"
 #include "TankTowerType.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -46,12 +47,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret type")
 	TArray<TSubclassOf<ATankTowerType>> TankTowers;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Componetns")
+	UHealthSystem* HealthSystem;
+		
 	void MoveForward(float ForwardAxis);
 	void Rotate(float RotationValue);
 	void Fire();
 	void AlterFireOn();
 	void AlterFireOff();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
+
+	UFUNCTION()
+	void OnDamageTaken(float Amount);
+	UFUNCTION()
+	void OnDeath();
 
 	virtual void TakeDamage(FDamageInfo Info) override;
 

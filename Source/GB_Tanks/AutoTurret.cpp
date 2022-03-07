@@ -6,6 +6,17 @@
 #include "TankPawn.h"
 
 
+void AAutoTurret::Death()
+{
+	Tower->Destroy();
+	Destroy();
+}
+
+void AAutoTurret::DamageTaken(float Amount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), Amount, HealthSystem->GetHealth());
+}
+
 bool AAutoTurret::IsAimed()
 {
 	auto TurretDirection = Tower->GetActorForwardVector();
@@ -73,7 +84,7 @@ void AAutoTurret::GetClosestTarget()
 
 void AAutoTurret::TakeDamage(FDamageInfo Info)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"Tank taking damage");
+	HealthSystem->TakeDamage(Info.DamageAmount);
 }
 
 void AAutoTurret::OnSensorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -118,8 +129,11 @@ AAutoTurret::AAutoTurret()
 	FoeDetector = CreateDefaultSubobject<USphereComponent>("Foe Detector");
 	FoeDetector->SetupAttachment(RootComponent);
 	FoeDetector->SetSphereRadius(TargetingRange);
+
+	HealthSystem = CreateDefaultSubobject<UHealthSystem>("Health system");
 	
-	
+	HealthSystem->OnDie.AddUObject(this, &AAutoTurret::Death);
+	HealthSystem->OnDamage.AddUObject(this, &AAutoTurret::DamageTaken);
 }
 
 // Called when the game starts or when spawned

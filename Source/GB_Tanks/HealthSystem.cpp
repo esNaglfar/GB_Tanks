@@ -3,6 +3,8 @@
 
 #include "HealthSystem.h"
 
+#include "TankPawn.h"
+
 // Sets default values for this component's properties
 UHealthSystem::UHealthSystem()
 {
@@ -13,14 +15,45 @@ UHealthSystem::UHealthSystem()
 	// ...
 }
 
+void UHealthSystem::TakeDamage(float Amount)
+{
+	Health = FMath::Clamp(Health - Amount,0.f,MaxHealth);
+
+	if(Health <= 0)
+	{
+		if(!OnDie.IsBound())
+			return;
+		OnDie.Broadcast();
+	}
+	else
+	{
+		if(!OnDamage.IsBound())
+			return;
+		OnDamage.Broadcast(Amount);
+	}
+}
+
+float UHealthSystem::GetHealth() const
+{
+	return Health;
+}
+
+float UHealthSystem::GetHealthState() const
+{
+	return  Health / MaxHealth;
+}
+
+void UHealthSystem::AddHealth(float Amount)
+{
+	Health = FMath::Clamp(Health + Amount,0.f,MaxHealth);
+}
+
 
 // Called when the game starts
 void UHealthSystem::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
+	Health = MaxHealth;
 }
 
 
