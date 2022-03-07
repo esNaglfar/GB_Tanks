@@ -21,6 +21,8 @@ ATankTowerType::ATankTowerType()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>("Projectile spawn point");
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
+
+	
 	
 }
 

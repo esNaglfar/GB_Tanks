@@ -43,7 +43,6 @@ void AMainPlayerController::OnMoveForward(float Value)
 void AMainPlayerController::OnRotate(float Value)
 {
 	PlayerPawn->Rotate(Value);
-	
 }
 
 void AMainPlayerController::OnFire()

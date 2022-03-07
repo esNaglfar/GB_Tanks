@@ -81,6 +81,8 @@ void AAutoTurret::OnSensorOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 {
 	if(static ATankPawn* target = Cast<ATankPawn>(OtherActor))
 	{
+		if(!target)
+			return;
 		Targets.AddUnique(target);
 		if(!Target.IsValid())
 		{

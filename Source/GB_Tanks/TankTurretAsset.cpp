@@ -19,9 +19,9 @@ ATankTurretAsset::ATankTurretAsset()
 	AssetMesh = CreateDefaultSubobject<UStaticMeshComponent>("Asset Mesh");
 	AssetMesh->SetupAttachment(RootComponent);
 
-	AssetMesh->SetCollisionProfileName(FName("OverlapAll"));
-	AssetMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	AssetMesh->SetGenerateOverlapEvents(true);
+	Collision->SetCollisionProfileName(FName("OverlapAll"));
+	Collision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Collision->SetGenerateOverlapEvents(true);
 
 	
 }
