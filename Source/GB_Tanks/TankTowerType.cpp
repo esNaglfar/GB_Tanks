@@ -5,7 +5,6 @@
 
 
 #include "DrawDebugHelpers.h"
-#include "MainPlayerController.h"
 #include "TankPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -22,7 +21,6 @@ ATankTowerType::ATankTowerType()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>("Projectile spawn point");
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
-	
 }
 
 void ATankTowerType::Fire()
@@ -65,15 +63,16 @@ void ATankTowerType::ResetFireState()
 	bCanFire = true;
 }
 
-void ATankTowerType::RotateTower()
+
+void ATankTowerType::RotateTower(FVector LookAtPoint)
 {
-	if(!TankPawn)
-		return;
-	FVector mousePos = TankPawn->TankController->GetMousePos();
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LookAtPoint);
 	FRotator currentRotation = GetActorRotation();
-	targetRotation.Pitch = currentRotation.Pitch;
-	targetRotation.Roll = currentRotation.Roll;
+	if(!bIsTurret)
+	{
+		targetRotation.Pitch = currentRotation.Pitch;
+		targetRotation.Roll = currentRotation.Roll;
+	}
 	SetActorRotation(FMath::Lerp(currentRotation,targetRotation,RotationAcceleration*GetWorld()->GetDeltaSeconds()));
 }
 
@@ -92,11 +91,10 @@ void ATankTowerType::MakeShot(FString text) // text for a while...
 			);
 
 		if(projectile)
-			projectile->Launch();
+			projectile->Launch(this);
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "LASER PEW");
 		FHitResult hitResult;
 		
 		FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
@@ -111,7 +109,15 @@ void ATankTowerType::MakeShot(FString text) // text for a while...
 			DrawDebugLine(GetWorld(), start, hitResult.Location, FColor::Red, false, 0.5f, 0,5.f);
 			if(hitResult.Actor.Get())
 			{
-				hitResult.GetActor()->Destroy();
+				auto target = Cast<IDestroyable>(hitResult.GetActor());
+				if (target)
+				{
+					FDamageInfo info;
+					info.DamageAmount = TraceTowerDamage;
+					info.DamageSource = this;
+					info.DamageSourceOwner = this;
+					target->TakeDamage(info);
+				}
 			}
 		}
 		
@@ -146,7 +152,7 @@ void ATankTowerType::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	RotateTower();
+	//RotateTower();
 	
 	GEngine->AddOnScreenDebugMessage(500, 10,FColor::Yellow, FString::Printf(TEXT(" Ammo : %i / %i"), CurrentAmmo, MaxAmmo));
 	GEngine->AddOnScreenDebugMessage(499, 10,FColor::Yellow, FString::Printf(TEXT(" Reload timer : %f"),

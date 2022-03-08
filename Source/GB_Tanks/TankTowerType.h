@@ -60,6 +60,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
 	float LaserAtackRange = 3000.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Control")
+	bool bIsTurret = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float TraceTowerDamage = 25.f;
 	
 	bool bCanFire = true;
 	bool bCanAlterFire = false;
@@ -73,7 +79,9 @@ public:
 	void AlterFireOff();
 	void SetTankPawn(ATankPawn* Pawn);
 	void ResetFireState();
-	void RotateTower();
+	
+	void RotateTower(FVector LookAtPoint);
+	
 	void MakeShot(FString text);
 	void AddAmmo(int amount);
 

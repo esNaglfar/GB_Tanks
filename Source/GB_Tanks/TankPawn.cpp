@@ -32,8 +32,27 @@ ATankPawn::ATankPawn()
 	CameraArm->bInheritYaw = false;
 	CameraArm->bInheritRoll = false;
 	CameraArm->TargetArmLength = 2500.f;
+	CameraArm->bDoCollisionTest = false;
+
+	HealthSystem = CreateDefaultSubobject<UHealthSystem>("Health System");
+
+	HealthSystem->OnDie.AddUObject(this, &ATankPawn::OnDeath);
+	HealthSystem->OnDamage.AddUObject(this, &ATankPawn::OnDamageTaken);
 
 }
+
+
+void ATankPawn::OnDamageTaken(float Amount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), Amount, HealthSystem->GetHealth());
+}
+
+void ATankPawn::OnDeath()
+{
+	TankTower->Destroy();
+	Destroy();
+}
+
 
 void ATankPawn::MoveForward(float ForwardAxis)
 {
@@ -71,6 +90,32 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 	if(TankTower)
 	TankTower->Destroy();
 	TankTower = SpawnTower(TowerType);
+}
+
+void ATankPawn::TargetDestroyed(AActor* target)
+{
+	
+}
+
+void ATankPawn::TakeDamage(FDamageInfo Info)
+{
+	HealthSystem->TakeDamage(Info.DamageAmount);
+}
+
+void ATankPawn::CountScore(FScoreInfo Info)
+{
+	Score += Info.Points;
+	GEngine->AddOnScreenDebugMessage(-1,5, FColor::Red, Info.DestroyedTarget->GetName() + " was killed by " + Info.DestroyerOwner->GetName() + " with " + Info.Destroyer->GetName());
+}
+
+int ATankPawn::GetPoints()
+{
+	return Points;
+}
+
+void ATankPawn::RotateTower()
+{
+	TankTower->RotateTower(TankController->GetMousePos());
 }
 
 void ATankPawn::ChangeTowerByInput(float Value)
@@ -139,6 +184,9 @@ void ATankPawn::BeginPlay()
 	if(!TankTowerTypeBase)
 		return;
 	ChangeTower(TankTowerTypeBase);
+
+	GetWorld()->GetTimerManager().SetTimer(RotationHandle,this, &ATankPawn::RotateTower,TowerRotationTimeDelta, true
+		, TowerRotationTimeDelta);
 }
 
 // Called every frame
