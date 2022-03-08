@@ -71,6 +71,7 @@ void AAutoTurret::TargetEliminated()
 void AAutoTurret::GetClosestTarget()
 {
 	float MinimalRange = 9999999.f;
+	Target = nullptr;
 	for(auto target: Targets)
 	{
 		float Distance = FVector::Distance(GetActorLocation(), target->GetActorLocation());
@@ -101,10 +102,9 @@ int AAutoTurret::GetPoints()
 void AAutoTurret::OnSensorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(static ATankPawn* target = Cast<ATankPawn>(OtherActor))
+	auto target = Cast<ATankPawn>(OtherActor);
+	if(target)
 	{
-		if(!target)
-			return;
 		Targets.AddUnique(target);
 		if(!Target.IsValid())
 		{
@@ -117,10 +117,13 @@ void AAutoTurret::OnSensorEndOverlap(class UPrimitiveComponent* OverlappedComp, 
 	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 
 {
-	if(static auto target = Cast<ATankPawn>(OtherActor))
-	{
+	auto target = Cast<ATankPawn>(OtherActor);
+	if(!target)
+		return;
+	if(Targets.Contains(target))
 		Targets.Remove(target);
-	}
+	if(target == Target)
+		GetClosestTarget();
 }
 
 // Sets default values
