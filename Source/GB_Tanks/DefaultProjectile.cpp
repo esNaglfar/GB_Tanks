@@ -4,6 +4,7 @@
 #include "DefaultProjectile.h"
 
 #include "Destroyable.h"
+#include "Scorable.h"
 
 // Sets default values
 ADefaultProjectile::ADefaultProjectile()
@@ -17,7 +18,6 @@ ADefaultProjectile::ADefaultProjectile()
 
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ADefaultProjectile::OnMeshOverlapBegin);
 	Mesh->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
-	
 }
 
 void ADefaultProjectile::Launch(AActor* _Owner)
@@ -30,15 +30,25 @@ void ADefaultProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	auto target = Cast<IDestroyable>(OtherActor);
-	if(!target)
-		return;
+	if(target)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s hitted the %s. "), *GetName(), *OtherActor->GetName());
+		FDamageInfo Info;
+		Info.DamageAmount = Damage;
+		Info.DamageSource = this;
+		Info.DamageSourceOwner = Owner;
+		target->TakeDamage(Info);
+		auto Score_target = Cast<IScorable>(OtherActor);
+		auto Score_Owner = Cast<IScorable>(Owner);
+		if(!Score_target || !Score_Owner)
+			return;
+		FScoreInfo info;
+		info.Points = Score_target->GetPoints();
+		info.Destroyer = this;
+		info.DestroyerOwner = Owner;
+		Score_Owner->CountScore(info);
+	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s hitted the %s. "), *GetName(), *OtherActor->GetName());
-	FDamageInfo Info;
-	Info.DamageAmount = Damage;
-	Info.DamageSource = this;
-	Info.DamageSourceOwner = Owner;
-	target->TakeDamage(Info);
 	this->Destroy();
 }
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Destroyable.h"
 #include "HealthSystem.h"
+#include "Scorable.h"
 #include "TankTowerType.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -13,7 +14,7 @@
 #include "AutoTurret.generated.h"
 
 UCLASS()
-class GB_TANKS_API AAutoTurret : public AActor, public IDestroyable
+class GB_TANKS_API AAutoTurret : public AActor, public IDestroyable, public IScorable
 {
 	GENERATED_BODY() 
 public:
@@ -48,6 +49,8 @@ public:
 	UPROPERTY()
 	TWeakObjectPtr<ATankPawn> Target;
 
+	int Points = 3;
+	int Score = 0;
 	
 	UFUNCTION()
 	void Death();
@@ -60,7 +63,6 @@ public:
 
 	FTimerHandle TargetingHandler;
 	
-	
 	bool IsAimed();
 	void RotateToTarget();
 	bool IsTargetInRange();
@@ -69,6 +71,9 @@ public:
 	void GetClosestTarget();
 
 	virtual void TakeDamage(FDamageInfo Info) override;
+
+	virtual void CountScore(FScoreInfo Info) override;
+	virtual int GetPoints() override;
 	
 	UFUNCTION()
 	void OnSensorOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

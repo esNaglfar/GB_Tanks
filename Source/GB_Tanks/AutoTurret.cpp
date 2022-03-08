@@ -87,6 +87,17 @@ void AAutoTurret::TakeDamage(FDamageInfo Info)
 	HealthSystem->TakeDamage(Info.DamageAmount);
 }
 
+void AAutoTurret::CountScore(FScoreInfo Info)
+{
+	Score += Info.Points;
+	GEngine->AddOnScreenDebugMessage(-1,5, FColor::Green, Info.DestroyedTarget->GetName() + " was killed by " + Info.DestroyerOwner->GetName() + " with " + Info.Destroyer->GetName());
+}
+
+int AAutoTurret::GetPoints()
+{
+	return Points;
+}
+
 void AAutoTurret::OnSensorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

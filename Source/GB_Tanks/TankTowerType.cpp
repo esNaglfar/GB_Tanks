@@ -21,9 +21,6 @@ ATankTowerType::ATankTowerType()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>("Projectile spawn point");
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
-
-	
-	
 }
 
 void ATankTowerType::Fire()
@@ -112,7 +109,15 @@ void ATankTowerType::MakeShot(FString text) // text for a while...
 			DrawDebugLine(GetWorld(), start, hitResult.Location, FColor::Red, false, 0.5f, 0,5.f);
 			if(hitResult.Actor.Get())
 			{
-				hitResult.GetActor()->Destroy();
+				auto target = Cast<IDestroyable>(hitResult.GetActor());
+				if (target)
+				{
+					FDamageInfo info;
+					info.DamageAmount = TraceTowerDamage;
+					info.DamageSource = this;
+					info.DamageSourceOwner = this;
+					target->TakeDamage(info);
+				}
 			}
 		}
 		

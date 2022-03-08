@@ -92,9 +92,25 @@ void ATankPawn::ChangeTower(TSubclassOf<ATankTowerType> TowerType)
 	TankTower = SpawnTower(TowerType);
 }
 
+void ATankPawn::TargetDestroyed(AActor* target)
+{
+	
+}
+
 void ATankPawn::TakeDamage(FDamageInfo Info)
 {
 	HealthSystem->TakeDamage(Info.DamageAmount);
+}
+
+void ATankPawn::CountScore(FScoreInfo Info)
+{
+	Score += Info.Points;
+	GEngine->AddOnScreenDebugMessage(-1,5, FColor::Red, Info.DestroyedTarget->GetName() + " was killed by " + Info.DestroyerOwner->GetName() + " with " + Info.Destroyer->GetName());
+}
+
+int ATankPawn::GetPoints()
+{
+	return Points;
 }
 
 void ATankPawn::RotateTower()

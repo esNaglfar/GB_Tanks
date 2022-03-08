@@ -63,6 +63,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Control")
 	bool bIsTurret = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float TraceTowerDamage = 25.f;
 	
 	bool bCanFire = true;
 	bool bCanAlterFire = false;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Destroyable.h"
 #include "HealthSystem.h"
+#include "Scorable.h"
 #include "TankTowerType.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -18,7 +19,7 @@ class AMainPlayerController;
 
 
 UCLASS(Blueprintable)
-class GB_TANKS_API ATankPawn : public APawn, public IDestroyable
+class GB_TANKS_API ATankPawn : public APawn, public IDestroyable, public IScorable
 {
 	GENERATED_BODY()
 
@@ -49,7 +50,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Componetns")
 	UHealthSystem* HealthSystem;
-		
+
+	int Score = 0;
+	int Points = 12;
+	
 	void MoveForward(float ForwardAxis);
 	void Rotate(float RotationValue);
 	void Fire();
@@ -57,13 +61,19 @@ public:
 	void AlterFireOff();
 	void ChangeTower(TSubclassOf<ATankTowerType> TowerType);
 
+	void TargetDestroyed(AActor* target);
+
+	
 	UFUNCTION()
 	void OnDamageTaken(float Amount);
 	UFUNCTION()
 	void OnDeath();
 
 	virtual void TakeDamage(FDamageInfo Info) override;
+	virtual  void CountScore(FScoreInfo Info) override;
+	virtual int GetPoints() override;
 
+	
 	UFUNCTION()
 	void RotateTower();
 

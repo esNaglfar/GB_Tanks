@@ -10,13 +10,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8fa23acd-6418-4aba-9d8e-7c4911115d18" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints_GB/BP_TankBase.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +277,7 @@
       <workItem from="1645580079732" duration="11085000" />
       <workItem from="1645611163440" duration="18496000" />
       <workItem from="1645634431080" duration="6595000" />
-      <workItem from="1645727493208" duration="92592000" />
+      <workItem from="1645727493208" duration="95165000" />
     </task>
     <servers />
   </component>
