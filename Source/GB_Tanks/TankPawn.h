@@ -6,6 +6,7 @@
 #include "Destroyable.h"
 #include "HealthSystem.h"
 #include "Scorable.h"
+#include "TankAIController.h"
 #include "TankTowerType.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -70,7 +71,7 @@ public:
 	void OnDeath();
 
 	virtual void TakeDamage(FDamageInfo Info) override;
-	virtual  void CountScore(FScoreInfo Info) override;
+	virtual void CountScore(FScoreInfo Info) override;
 	virtual int GetPoints() override;
 
 	
@@ -99,8 +100,12 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Combat|Health")
 	float MaxHealth = 500.f;
+
 	
-	AMainPlayerController* TankController;
+	AMainPlayerController* PController;
+	ATankAIController* AIController;
+
+
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Misc")
 	ATankTowerType* TankTower;

@@ -10,7 +10,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8fa23acd-6418-4aba-9d8e-7c4911115d18" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GB_Tanks/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GB_Tanks.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/GB_Tanks.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GB_Tanks/TankPawn.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,15 +20,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/WaypointMark.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/WaypointMark.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/AutoTurret.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/TankTowerType.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE/Epic Games/UE_4.27/Engine/Source/ThirdParty/Crunch/include/crnlib.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/HealthSystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/GB_Tanks/DefaultProjectile.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />

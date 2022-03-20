@@ -115,7 +115,10 @@ int ATankPawn::GetPoints()
 
 void ATankPawn::RotateTower()
 {
-	TankTower->RotateTower(TankController->GetMousePos());
+	if(PController)
+	TankTower->RotateTower(PController->GetMousePos());
+	if(AIController)
+		return;
 }
 
 void ATankPawn::ChangeTowerByInput(float Value)
@@ -178,8 +181,10 @@ void ATankPawn::Stop()
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	TankController = Cast<AMainPlayerController>(GetController());
+
+	AIController = Cast<ATankAIController>(GetController());
+	if(!AIController)
+		PController = Cast<AMainPlayerController>(GetController());
 
 	if(!TankTowerTypeBase)
 		return;
